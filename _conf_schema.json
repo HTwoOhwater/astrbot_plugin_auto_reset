@@ -1,0 +1,46 @@
+{
+  "_basic_section": {
+    "description": "=== 基本设置 ===",
+    "type": "text",
+    "invisible": true
+  },
+  "enabled": {
+    "description": "启用自动重置",
+    "type": "bool",
+    "default": false,
+    "hint": "开启后，Bot 会按下方设定的间隔和时间自动执行 /reset（清空 LLM 对话上下文）"
+  },
+  "interval_days": {
+    "description": "相隔天数",
+    "type": "int",
+    "default": 7,
+    "slider": {
+      "min": 1,
+      "max": 365,
+      "step": 1
+    },
+    "hint": "每隔多少天执行一次 /reset。例如：7 = 每 7 天重置一次"
+  },
+  "hour": {
+    "description": "执行时间（时）",
+    "type": "int",
+    "default": 3,
+    "slider": {
+      "min": 0,
+      "max": 23,
+      "step": 1
+    },
+    "hint": "重置执行的小时（0-23）。例如：3 = 凌晨 3 点"
+  },
+  "minute": {
+    "description": "执行时间（分）",
+    "type": "int",
+    "default": 0,
+    "slider": {
+      "min": 0,
+      "max": 59,
+      "step": 1
+    },
+    "hint": "重置执行的分钟（0-59）。例如：30 = 30 分"
+  }
+}

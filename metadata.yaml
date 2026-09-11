@@ -1,0 +1,6 @@
+name: astrbot_plugin_auto_reset
+display_name: 草莓精的自动重启
+desc: 每隔 N 天在指定时间自动执行 /reset，清空 LLM 对话上下文
+version: 1.0.0
+author: Song-yunru
+repo: https://github.com/Song-yunru/astrbot_plugin_auto_reset
