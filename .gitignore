@@ -8,3 +8,4 @@ auto_reset_state.json
 .pytest_cache/
 rollover_jobs.json
 archives/
+node_modules/

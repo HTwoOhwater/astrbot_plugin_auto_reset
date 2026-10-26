@@ -1,0 +1,8 @@
+{
+  "views": {
+    "daily-memory": {
+      "title": "每日记忆",
+      "description": "Daily memory archiving and conversation rollover."
+    }
+  }
+}

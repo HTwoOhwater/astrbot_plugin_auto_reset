@@ -2,7 +2,19 @@
 
 指定 QQ 群每天北京时间 **04:00** 归档当前可见记录、导入现有 MemoryCompanion，然后开启新的原生对话。旧对话、人格、关系和长期记忆保留；摘要在后台分批整理，失败任务可以恢复。
 
-这是基于 [Song-yunru/astrbot_plugin_auto_reset](https://github.com/Song-yunru/astrbot_plugin_auto_reset) 改造的开发版 **2.0.0**。实现位于 `feat/daily-memory-rollover` 分支；默认分支可能仍是上游旧版。已做源码接口核对和离线测试，**尚未在真实 AstrBot 实例安装、联调**。
+这是基于 [Song-yunru/astrbot_plugin_auto_reset](https://github.com/Song-yunru/astrbot_plugin_auto_reset) 改造的开发版 **2.1.0**。实现位于 `feat/daily-memory-rollover` 分支；默认分支可能仍是上游旧版。已做源码接口核对、离线测试和本地浏览器验收，**尚未在真实 AstrBot 实例安装、联调**。
+
+## 侧栏管理界面
+
+本版自带独立管理页面，安装并启用插件、刷新 AstrBot 后台后，会在左侧插件视图区出现 **「每日记忆」**，与陪伴面板、记忆面板属于同一种入口。
+
+页面可以直接配置开关、群范围和时间，查看依赖检查、最近任务、换新/摘要进度，手动排队换新或重试摘要。设置保存后直接生效；有未保存修改时不能执行手动操作。换新与重试都需要确认目标群。
+
+页面使用 AstrBot 自带的视图 bridge 和后台认证，不另开服务端口、不另设账号。未登录后台、插件停止后的旧页面不能调用管理接口；界面不展示原始聊天内容。
+
+**GitHub 推送不等于服务器已安装，也不会自动进入插件市场。** 安装这个开发分支可[下载 ZIP](https://github.com/HTwoOhwater/astrbot_plugin_auto_reset/archive/refs/heads/feat/daily-memory-rollover.zip)，在插件页上传安装并启用，然后刷新后台。不要从默认分支安装旧版，也不要与同名旧版同时放两个目录。
+
+如果侧栏仍未出现，依次确认插件卡片版本为 `2.1.0`、插件已启用、目录中存在 `views/daily-memory/index.html`，然后重载插件并刷新整个后台。插件开关控制是否加载页面，页面里的「启用每日换新」只控制定时任务，两者不同。
 
 ## 适配范围
 
@@ -16,7 +28,7 @@
 
 ## 最少需要配置什么
 
-先安装本开发分支，再打开插件配置：
+先安装本开发分支，再从「每日记忆」页面或插件卡片的配置入口设置：
 
 | 中文配置项 | 技术键 | 填写方法 |
 | --- | --- | --- |
@@ -122,6 +134,16 @@ python -m compileall -q main.py rollover
 git diff --check
 ```
 
-测试覆盖时间边界、名单隔离、人格/旧对话保留、导入失败、摘要多批次与暂停重试、活跃任务延后、新消息保留、中断恢复、手动切换冲突、长文本分片、重复导入和损坏归档。GitHub Actions 也执行这些检查中的测试与编译；离线替身测试不代表真实部署联调通过。
+测试覆盖时间边界、名单隔离、人格/旧对话保留、导入失败、摘要多批次与暂停重试、活跃任务延后、新消息保留、中断恢复、手动切换冲突、长文本分片、重复导入和损坏归档；管理页面还覆盖登录身份检查、配置保存/回滚、过期页面冲突和操作范围。
+
+可选的本地浏览器验收（只使用示例数据，不连接服务器）：
+
+```bash
+npm install --no-save --no-package-lock playwright@1.62.1
+npx playwright install chromium
+node tests/test_view.cjs
+```
+
+可用 `BROWSER_EXECUTABLE` 指定已有 Chromium/Edge 路径。测试覆盖页面呈现、确认/取消、保存与刷新、未保存修改、恶意文本转义、手机宽度和 bridge 缺失。GitHub Actions 执行 Python 测试、编译和 Chromium 页面验收；以上不代表真实部署联调通过。
 
 实现细节和源码核对入口见 [设计与适配说明](docs/daily-memory-rollover.md)。保留上游来源；上游未声明许可证，本 fork 未另行授予许可证。

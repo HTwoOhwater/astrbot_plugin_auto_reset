@@ -18,6 +18,8 @@ Fork 来源为 Song-yunru/astrbot_plugin_auto_reset，基线提交 `a367e2ad5e3a
 | `rollover/engine.py` | 北京日界、白名单、阶段推进、幂等性、摘要退避 |
 | `rollover/state.py` | 原子账本、内容寻址原文归档、完整性校验 |
 | `rollover/adapters.py` | 三个目标版本的会话、缓冲、导入和摘要适配 |
+| `rollover/dashboard.py`、`rollover/web.py` | 仅后台登录用户可用的状态、配置与排队接口 |
+| `views/daily-memory/` | AstrBot 自动发现的侧栏页面，使用内置 bridge |
 | `tests/test_rollover.py` | 标准库离线替身与故障注入测试 |
 
 ```text
@@ -77,3 +79,15 @@ done + summary_state=pending / paused / complete
 离线测试使用替身模拟已核对的接口，不调用真实模型、不连接 QQ、不读取服务器聊天数据。尚需在隔离 AstrBot 实例验证：插件实际加载、命令权限与 UI、SQLite 真实导入、摘要生成/召回、观察器并发以及热重载恢复。
 
 数据备份应同时包括 AstrBot 原生历史、两个插件各自数据及本插件账本/归档。此版不自动清理原文归档，也不会更改关系、画像、话题/事件记忆或召回设置。
+
+## 2.1.0 侧栏页面
+
+按 [AstrBot v4.29.1 插件视图接口](https://github.com/AstrBotDevs/AstrBot/blob/v4.29.1/docs/zh/dev/star/guides/plugin-pages.md) 提供 `views/daily-memory/index.html`，通过 `.astrbot-plugin/i18n/zh-CN.json` 声明侧栏标题「每日记忆」。不依赖独立 Web 服务或外部 CDN。
+
+注册命名空间为 `/astrbot_plugin_auto_reset/panel/*`。状态接口只返回设置、组件版本、检查结果与白名单任务的有限字段；不会返回原始归档、时间线 ID、聊天缓存、路径或模型凭据。状态读取不触发摘要或换新。
+
+设置保存使用四项明确字段，检查类型、共享群格式、时间范围和配置指纹。旧页面不能覆盖其他页面刚保存的设置；保存失败恢复内存配置。巡检持锁时拒绝保存/手动操作，避免交错覆盖。
+
+手动接口要求当前设置指纹、已保存白名单内的目标群与确认标记，只排队，不在 HTTP 请求中立即换新。依赖 AstrBot 扩展路由认证，并再次检查请求用户名、插件命名空间和实例生命周期；停用/卸载后保留的旧 handler 拒绝操作。
+
+前端使用 textContent 构建状态表，浅色/深色主题由 AstrBot bridge 同步；表格在窄屏中横向滚动。后端测试与示例数据驱动的真实浏览器验收均与 QQ 和服务器数据隔离。侧栏在实际 AstrBot 实例中的发现、登录转发及热重载仍需安装联调。

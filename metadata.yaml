@@ -1,7 +1,10 @@
 name: astrbot_plugin_auto_reset
 display_name: 每日记忆归档与对话换新
 desc: 指定群每日归档后换新对话，联动 PrivateCompanion 6.7.0 与 MemoryCompanion 1.10.5，保留历史与失败任务。
-version: 2.0.0
+version: 2.1.0
 author: HTwoOhwater (fork of Song-yunru)
 repo: https://github.com/HTwoOhwater/astrbot_plugin_auto_reset
 astrbot_version: "==4.29.1"
+views:
+  - name: daily-memory
+    title: 每日记忆

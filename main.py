@@ -12,9 +12,10 @@ from astrbot.api.star import Context, Star, StarTools, register
 from .rollover.adapters import AstrBotAdapter
 from .rollover.engine import Coordinator, Settings
 from .rollover.state import Journal
+from .rollover.web import PanelAPI
 
 
-@register("auto_reset", "HTwoOhwater", "每日归档后换新对话，联动现有陪伴与记忆插件", "2.0.0")
+@register("auto_reset", "HTwoOhwater", "每日归档后换新对话，联动现有陪伴与记忆插件", "2.1.0")
 class AutoResetPlugin(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
@@ -24,14 +25,19 @@ class AutoResetPlugin(Star):
             AstrBotAdapter(context, version("astrbot")),
         )
         self._worker = None
+        self._panel_live = False
+        self.panel = PanelAPI(self)
+        self.panel.register()
 
     def settings(self) -> Settings:
         return Settings.from_config(self.config)
 
     async def initialize(self):
+        self._panel_live = True
         self._worker = asyncio.create_task(self._run(), name="auto_reset_rollover")
 
     async def terminate(self):
+        self._panel_live = False
         if self._worker:
             self._worker.cancel()
             try:

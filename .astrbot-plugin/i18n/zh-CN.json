@@ -1,0 +1,8 @@
+{
+  "views": {
+    "daily-memory": {
+      "title": "每日记忆",
+      "description": "设置每天换新时间、选择群聊，查看归档和摘要进度。"
+    }
+  }
+}

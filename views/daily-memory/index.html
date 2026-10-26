@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>每日记忆</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main>
+  <header class="page-header">
+    <div class="heading"><div class="app-mark" aria-hidden="true">◷</div><div><h1>每日记忆归档</h1><p>每天开启新对话，让重要的事留在记忆里。</p></div></div>
+    <div class="header-tools"><span id="version" class="chip">正在连接</span><button id="refresh" class="quiet">刷新状态</button></div>
+  </header>
+  <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+  <section class="metrics" aria-label="运行概览">
+    <article class="metric"><span>自动换新</span><strong id="enabled-status">—</strong><small id="scope-status">正在读取设置</small></article>
+    <article class="metric"><span>下一日界 · 北京时间</span><strong id="next-time">—</strong><small id="next-date">会话繁忙时自动延后</small></article>
+    <article class="metric"><span>本日换新</span><strong id="today-count">—</strong><small>已完成的群 / 生效群</small></article>
+    <article class="metric"><span>待整理摘要</span><strong id="pending-count">—</strong><small id="pending-status">原文归档持续保留</small></article>
+  </section>
+  <div class="columns">
+    <section class="card settings-card" aria-labelledby="settings-title">
+      <div class="card-heading"><h2 id="settings-title">每日设置</h2><span class="subtle">北京时间 UTC+8</span></div>
+      <form id="settings-form">
+        <label class="enable-row" for="enabled"><span><b>启用每日换新</b><small>只处理下面指定的群聊</small></span><input id="enabled" type="checkbox" role="switch" disabled></label>
+        <label class="field-label" for="run-time">每天执行时间</label>
+        <input id="run-time" type="time" value="04:00" required disabled>
+        <p class="hint">首次开启安排下一次日界，不会立即清空当前对话。</p>
+        <label class="field-label" for="sessions">生效群聊</label>
+        <textarea id="sessions" rows="5" spellcheck="false" placeholder="qq:GroupMessage:123456" disabled></textarea>
+        <p class="hint">在目标群发送 <code>/sid</code>，把完整会话 ID 复制到这里，每行一个。不能只填群号。</p>
+        <div class="form-footer"><span id="dirty" class="subtle">设置尚未载入</span><button type="submit" id="save" class="primary" disabled>保存设置</button></div>
+      </form>
+    </section>
+    <div class="side-stack">
+      <section class="card" aria-labelledby="checks-title">
+        <div class="card-heading"><h2 id="checks-title">运行检查</h2><span id="check-badge" class="badge neutral">连接中</span></div>
+        <ul id="dependencies" class="dependency-list"><li class="subtle">正在检查组件…</li></ul>
+        <div id="scope-checks" class="scope-checks"></div>
+        <p class="hint">组件版本和群捕获检查通过后，才会执行归档与换新。</p>
+      </section>
+      <section class="card" aria-labelledby="actions-title">
+        <div class="card-heading"><h2 id="actions-title">手动处理</h2><span id="worker-status" class="subtle">—</span></div>
+        <label class="field-label" for="action-session">选择已保存的生效群</label>
+        <select id="action-session" disabled><option value="">请先保存生效群</option></select>
+        <div class="action-buttons"><button id="run-now" class="outline" disabled>立即归档并换新</button><button id="retry" class="quiet" disabled>重试未完成摘要</button></div>
+        <p class="hint">换新会保留旧对话、人格和关系。同一逻辑日只执行一次。</p>
+      </section>
+    </div>
+  </div>
+  <section class="card history-card" aria-labelledby="history-title">
+    <div class="card-heading"><div><h2 id="history-title">最近任务</h2><p class="hint">换新完成与摘要完成分别记录；摘要失败时原文仍保留。</p></div><span class="subtle">最近 50 项</span></div>
+    <div class="table-scroll"><table><thead><tr><th>逻辑日期</th><th>群会话</th><th>换新进度</th><th>摘要进度</th><th>待处理</th><th>说明</th></tr></thead><tbody id="jobs"><tr><td colspan="6" class="empty">正在读取任务…</td></tr></tbody></table></div>
+  </section>
+  <footer class="page-footer"><span>原文归档 → 导入现有记忆库 → 开启新对话 → 分批整理摘要</span><span id="updated">—</span></footer>
+</main>
+<dialog id="confirmation" aria-labelledby="dialog-title">
+  <form method="dialog"><h2 id="dialog-title">确认归档并换新</h2><p id="dialog-description"></p><p id="dialog-session" class="session-code"></p><p id="dialog-hint" class="hint">只影响这个群。旧对话和原始归档会保留。</p><div class="dialog-buttons"><button value="cancel" class="quiet">取消</button><button id="confirm-action" value="confirm" class="primary">确认执行</button></div></form>
+</dialog>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
