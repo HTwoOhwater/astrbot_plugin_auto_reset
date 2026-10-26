@@ -1,6 +1,7 @@
 name: astrbot_plugin_auto_reset
-display_name: 草莓精的自动重启
-desc: 每隔 N 天在指定时间自动执行 /reset，清空 LLM 对话上下文
-version: 1.0.0
-author: Song-yunru
-repo: https://github.com/Song-yunru/astrbot_plugin_auto_reset
+display_name: 每日记忆归档与对话换新
+desc: 指定群每日归档后换新对话，联动 PrivateCompanion 6.7.0 与 MemoryCompanion 1.10.5，保留历史与失败任务。
+version: 2.0.0
+author: HTwoOhwater (fork of Song-yunru)
+repo: https://github.com/HTwoOhwater/astrbot_plugin_auto_reset
+astrbot_version: "==4.29.1"

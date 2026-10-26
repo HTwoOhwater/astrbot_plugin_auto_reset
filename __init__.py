@@ -1,5 +1,5 @@
-"""astrbot_plugin_auto_reset - 定时自动执行 /reset 的插件"""
+"""astrbot_plugin_auto_reset - 每日记忆归档与对话换新。"""
 
 from .main import AutoResetPlugin
 
-__version__ = "1.0.0"
+__version__ = "2.0.0"

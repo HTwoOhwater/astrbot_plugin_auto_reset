@@ -1,46 +1,27 @@
 {
-  "_basic_section": {
-    "description": "=== 基本设置 ===",
-    "type": "text",
-    "invisible": true
-  },
   "enabled": {
-    "description": "启用自动重置",
+    "description": "启用每日归档与换新",
     "type": "bool",
     "default": false,
-    "hint": "开启后，Bot 会按下方设定的间隔和时间自动执行 /reset（清空 LLM 对话上下文）"
+    "hint": "首次启用安排下一次日界，不立即执行。原始记录保存并导入现有记忆插件后，再保留旧对话、开启新对话。"
   },
-  "interval_days": {
-    "description": "相隔天数",
-    "type": "int",
-    "default": 7,
-    "slider": {
-      "min": 1,
-      "max": 365,
-      "step": 1
-    },
-    "hint": "每隔多少天执行一次 /reset。例如：7 = 每 7 天重置一次"
+  "sessions": {
+    "description": "生效群聊（完整会话 ID）",
+    "type": "list",
+    "default": [],
+    "hint": "在目标群用 /sid 获取并填写完整 UMO，例如 qq:GroupMessage:123456。仅支持共享群聊；空列表不处理任何会话。"
   },
   "hour": {
-    "description": "执行时间（时）",
+    "description": "每日换新时间：时（北京时间）",
     "type": "int",
-    "default": 3,
-    "slider": {
-      "min": 0,
-      "max": 23,
-      "step": 1
-    },
-    "hint": "重置执行的小时（0-23）。例如：3 = 凌晨 3 点"
+    "default": 4,
+    "slider": {"min": 0, "max": 23, "step": 1}
   },
   "minute": {
-    "description": "执行时间（分）",
+    "description": "每日换新时间：分（北京时间）",
     "type": "int",
     "default": 0,
-    "slider": {
-      "min": 0,
-      "max": 59,
-      "step": 1
-    },
-    "hint": "重置执行的分钟（0-59）。例如：30 = 30 分"
+    "slider": {"min": 0, "max": 59, "step": 1},
+    "hint": "会话繁忙或依赖异常时会延后。重启会检查未完成任务；停机数天只补一次换新。"
   }
 }
